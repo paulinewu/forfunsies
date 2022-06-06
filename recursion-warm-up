@@ -1,0 +1,114 @@
+/**
+ * Recursion warm up
+ * 
+ * Purpose of practicing these problems is to better understand recursion at a really basic level. 
+ * it isn't meant to be representative of any interview questions and structures and algorithms, but 
+ * understanding this is very necessary.
+ * 
+ * Solve the below problems using recursion.
+    1. Find the sum of all elements in a linked list
+    2. Append an element to the end of a linked list
+    3. Sum all of the numbers from 1 to n where n is a positive number.
+    4. Find the sum of all elements in an array with no for or while loop
+    5. Binary search
+ */
+/**
+ * #1 
+ * ****************************************************/
+class LinkedListNode {
+  constructor(value) {
+    this.value = value;
+    this.next = null;
+  }
+}
+
+const a = new LinkedListNode(1);
+const b = new LinkedListNode(2);
+const c = new LinkedListNode(3);
+a.next = b;
+b.next = c;
+
+console.log(`sumOfAll(4) is ${sumOfAll(a)}`); // 6 
+
+const d = new LinkedListNode(4);
+d.next = null
+console.log(`sumOfAll(4) is ${sumOfAll(d)}`); // 4
+
+function sumOfAll(list) {
+    // base case, we've reached the list, where list.next === null.
+    if (!list || !list.next) return list.value;
+
+    return list.value + sumOfAll(list.next);
+}
+
+/**
+ * #2
+ * ***************************************************/
+const elementToAppend =  new LinkedListNode(11);
+console.log(`appendElement(a, 11), list element should be 11, and it is 
+    ${appendElement(a, elementToAppend).next.next.next.value}`);
+  
+function appendElement(list, element) {
+    console.log(`Append element log. current node value: ${list.value}`);
+
+    if (!list) return element;
+
+    if (!list.next) return list.next = element;
+
+    // adding to stack 1 2
+    if (list.next) {
+        appendElement(list.next, element);
+    }
+
+    // pop stack  2 1
+    return list;
+}
+/**
+ * #3
+ * ***************************************************/
+console.log(`Sum should be 6, and it is {${sumFrom1ToN(3)}}`);
+console.log(`Sum should be 171, and it is {${sumFrom1ToN(18)}}`);
+function sumFrom1ToN(n) {
+    if (n < 2) return 1;
+    return n + sumFrom1ToN(n-1);
+}
+/**
+ * #4
+ * ***************************************************/
+const shortArray = [1,2,3];
+console.log(`Sum in array should be 6, and it is {${sumOfAllInArray(shortArray)}}`);
+function sumOfAllInArray(array, i = array.length-1) {
+    // array[0] + array[1]
+    if (i < 1) {
+        return array[i];
+    }
+    return array[i] + sumOfAllInArray(array, --i);
+}
+/**
+ * #5
+ * ***************************************************/
+/*
+Input: nums = [-1,0,3,5,9,12], target = 9
+Output: 4
+*/
+const nums = [-1,0,3,5,9,12];
+const target = 9;
+console.log(`Search in nums for 9 should return index 4. It is ${binarySearchRecursive(nums, target)}`);
+function binarySearchRecursive(nums, target, left = 0, right = nums.length-1) {
+
+    const mid =  Math.floor((right+left)/2);
+
+    // base case we have either found the target, or it isn't found.
+    if (nums[mid] === target) return mid;
+
+    // if mid is less than target, target is in right section, search between mid and right.
+    if (nums[mid] < target){
+        return binarySearchRecursive(nums, target, mid+1, right);
+    }
+
+    // if mid is greater than target, target is in left section, search between left and mid.
+    if (nums[mid] > target) {
+        return binarySearchRecursive(nums, target, left, mid-1);
+    }
+    return -1;
+}
